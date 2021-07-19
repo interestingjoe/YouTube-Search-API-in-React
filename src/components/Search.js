@@ -6,7 +6,7 @@ const Search = ({ getInput }) => {
 
     const onChange = (e) => {
         setValue(e.target.value)
-        getInput(e.target.value)
+        // getInput(e.target.value)
     }
 
     const onClick = () => {

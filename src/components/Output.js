@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import Messages from '../statusMessages'
 
-const Output = ({ searchValue }) => {
-    console.log('output', searchValue)
+const Output = ({ statusMessage, searchValue }) => {
+    console.log('searchValue', searchValue);
+
+    const setMessage = (statusMessage) => {
+        if (statusMessage === Messages.error) {
+            return <p className='error'>{statusMessage}</p>
+        }
+
+        if (statusMessage === Messages.video) {
+            return <p className='warning'>{statusMessage}</p>
+        }
+
+        if (statusMessage !== '') {
+            return <p className='warning'>{statusMessage}</p>
+        }
+    }
 
     return (
         <section className='output'>
+            {
+                setMessage(statusMessage)
+            }            
             {/* <ul className='list'>
                 <li>
                     <a className='image' href='/'>
