@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Messages from '../statusMessages'
 
 const Output = ({ statusMessage, outputContent }) => {
-    console.log('outputContent', outputContent);
-
     const setMessage = (statusMessage) => {
         if (statusMessage === Messages.error) {
             return <p className='error'>{statusMessage}</p>
@@ -20,7 +18,6 @@ const Output = ({ statusMessage, outputContent }) => {
 
     const renderOutput = outputContent => {
         let items = outputContent.map((item) => {
-            // console.log('item', item);
             let videoId = `${item.id.videoId}`
             let anchor = `https://www.youtube.com/watch?v=${videoId}`
             let title = `${item['snippet']['title']}`

@@ -5,21 +5,25 @@ import Messages from './statusMessages'
 
 function App() {
   const [statusMessage, setStatusMessage] = useState('')
-  const [searchValue, setSearchValue] = useState('')
   const [outputContent, setOutputContent] = useState('')
   const api = 'https://content.googleapis.com/youtube/v3/'
   const paramPart = 'part=snippet';
 
-  const getInput = (input) => {
+  const getInput = input => {
     if (input === '') {
       setStatusMessage('')      
     } else {
       setStatusMessage(Messages.load)
     }
 
-    setSearchValue(input)
+    // If search input is blank then it resets output.
+    if (input === '') {
+      setOutputContent('')
+      return;
+    }
+
+    // Fetches from API.
     let url = `${api}search?${paramPart}&key=${process.env.REACT_APP_API_KEY}&q=${encodeURIComponent(input.trim())}`;
-    console.log('---', url)
     fetchPromise(url);
   }
 
@@ -29,14 +33,6 @@ function App() {
     }
     let response = await fetch(api);
     return response.json();
-  }
-
-  const renderVideoTags = item => {
-    let p = document.createElement('p')
-    p.classList.add('tags')
-    let copy = item['items'][0]['snippet']['tags']
-    p.innerHTML = '<strong>Video Tags:</strong> ' + copy.join(', ')
-    document.getElementById(item['items'][0]['id']).appendChild(p)
   }
 
   const fetchPromise = url => {
@@ -93,7 +89,19 @@ function App() {
           console.log('Error');
           // main.createMessage('error', 'Error fetching data');
         });
-    console.log('----');
+  }
+
+  const renderVideoTags = item => {
+    // Checks if this item already has Video Tags. If not then it renders it.
+    if (document.getElementById(item['items'][0]['id']).children[2] !== undefined) {
+      return;
+    }
+
+    let p = document.createElement('p')
+    p.classList.add('tags')
+    let copy = item['items'][0]['snippet']['tags']
+    p.innerHTML = '<strong>Video Tags:</strong> ' + copy.join(', ')
+    document.getElementById(item['items'][0]['id']).appendChild(p)
   }
 
   return (
