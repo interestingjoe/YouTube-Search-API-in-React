@@ -1,18 +1,26 @@
 import React from 'react'
 
-const Pagination = ({ outputContent, url, func}) => {
-    console.log('pagination outputContent', outputContent)
-
-    const render = (outputContent, url) => {
-        console.log('pagination urlGet', url)
-
+const Pagination = ({ response, paginationClick }) => {
+    const onClick = (param) => {
+        paginationClick(param)
     }
 
     return (
         <>
             {
-                url !== '' && outputContent.items !== undefined ? 
-                    render(outputContent, url) :
+                response.prevPageToken !== undefined || response.nextPageToken !== undefined ?
+                    <div className='pagination'>
+                        {
+                            response.prevPageToken !== undefined ?
+                            <button id='PREV' onClick={() => onClick(response.prevPageToken)}>PREV</button> :
+                            ''
+                        }
+                        {
+                            response.nextPageToken !== undefined ?
+                            <button id='NEXT' onClick={() => onClick(response.nextPageToken)}>NEXT</button> :
+                            ''
+                        }
+                    </div> :
                     ''
             }
         </>

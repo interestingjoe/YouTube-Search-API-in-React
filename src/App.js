@@ -7,7 +7,8 @@ import Messages from './statusMessages'
 function App() {
   const [statusMessage, setStatusMessage] = useState('')
   const [outputContent, setOutputContent] = useState('')
-  const [urlGet, setUrlGet] = useState('')
+  const [firstResponse, setFirstResponse] = useState([])
+  const [getUrl, setGetUrl] = useState(``)
   const api = 'https://content.googleapis.com/youtube/v3/'
   const paramPart = 'part=snippet';
 
@@ -26,8 +27,8 @@ function App() {
 
     // Fetches from API.
     let url = `${api}search?${paramPart}&key=${process.env.REACT_APP_API_KEY}&q=${encodeURIComponent(input.trim())}`;
+    setGetUrl(url)
     fetchPromise(url);
-    setUrlGet(url)
   }
 
   const fetchAPI = async (api) => {
@@ -38,7 +39,7 @@ function App() {
     return response.json();
   }
 
-  const fetchPromise = url => {
+  const fetchPromise = (url) => {
     fetchAPI(url)
         .then(async response => {
             console.log('1st response', response);
@@ -56,6 +57,7 @@ function App() {
                   let item = await fetchAPI(url);
                   arr.push(item);
               }
+              setFirstResponse(response)
               return await Promise.all(arr);
             } else {
               console.log('1 false');
@@ -65,7 +67,7 @@ function App() {
         .then(response => {
             console.log('2nd response', response);
             if (response.length > 0) {
-                console.log('true');
+                console.log('2nd true');
                 // If Video Tags exists in payload then render onto page.
                 for (const key in response) {
                     if (
@@ -78,7 +80,7 @@ function App() {
                     renderVideoTags(response[key])
                 }
             } else {
-                console.log('false');
+                console.log('2nd false');
                 // If Video Tags don't exist then display message.
                 if (document.getElementsByClassName('list')[0] === undefined) {
                     return;
@@ -106,11 +108,15 @@ function App() {
     document.getElementById(item['items'][0]['id']).appendChild(p)
   }
 
+  const paginationClick = (param) => {
+    fetchPromise(`${getUrl}&pageToken=${param}`)
+  }
+
   return (
     <>
       <Search getInput={getInput} />
       <Output statusMessage={statusMessage} outputContent={outputContent} />
-      <Pagination outputContent={outputContent} url={urlGet} func={fetchPromise} />
+      <Pagination response={firstResponse} paginationClick={paginationClick} />
     </>
   );
 }
