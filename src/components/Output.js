@@ -43,8 +43,8 @@ const Output = ({ statusMessage, outputContent }) => {
     return (
         <section className='output'>
                 {
-                    outputContent.length > 0 ? 
-                        renderOutput(outputContent) :
+                    outputContent.items !== undefined ? 
+                        renderOutput(outputContent.items) :
                         ''
                 }
         </section>

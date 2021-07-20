@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Search from './components/Search'
 import Output from './components/Output';
+import Pagination from './components/Pagination';
 import Messages from './statusMessages'
 
 function App() {
   const [statusMessage, setStatusMessage] = useState('')
   const [outputContent, setOutputContent] = useState('')
+  const [urlGet, setUrlGet] = useState('')
   const api = 'https://content.googleapis.com/youtube/v3/'
   const paramPart = 'part=snippet';
 
@@ -25,6 +27,7 @@ function App() {
     // Fetches from API.
     let url = `${api}search?${paramPart}&key=${process.env.REACT_APP_API_KEY}&q=${encodeURIComponent(input.trim())}`;
     fetchPromise(url);
+    setUrlGet(url)
   }
 
   const fetchAPI = async (api) => {
@@ -41,7 +44,7 @@ function App() {
             console.log('1st response', response);
 
             if (response.items.length > 0) {
-              setOutputContent(response.items)
+              setOutputContent(response)
 
               // Fetches Video Tags
               let arr = [];
@@ -73,7 +76,6 @@ function App() {
                     }
 
                     renderVideoTags(response[key])
-                    // Render Pagination here
                 }
             } else {
                 console.log('false');
@@ -108,6 +110,7 @@ function App() {
     <>
       <Search getInput={getInput} />
       <Output statusMessage={statusMessage} outputContent={outputContent} />
+      <Pagination outputContent={outputContent} url={urlGet} func={fetchPromise} />
     </>
   );
 }
