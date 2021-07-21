@@ -108,6 +108,7 @@ function App() {
   }
 
   const paginationClick = (param) => {
+    // If user clicks PREVIOUS or NEXT it clears out page and does another Fetch.
     setPaginationData('')
     setOutputContent('')
     setStatus(Messages.load)

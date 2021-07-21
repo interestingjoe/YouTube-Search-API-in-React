@@ -29,11 +29,11 @@ const Output = ({ outputContent }) => {
 
     return (
         <section className='output'>
-                {
-                    outputContent.items !== undefined ? 
-                    renderOutput(outputContent.items) :
-                    ''
-                }
+            {
+                outputContent.items !== undefined ? 
+                renderOutput(outputContent.items) :
+                ''
+            }
         </section>
     )
 }
