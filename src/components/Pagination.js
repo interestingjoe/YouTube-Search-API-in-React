@@ -1,6 +1,7 @@
 import React from 'react'
 
-const Pagination = ({ response, paginationClick }) => {
+const Pagination = ({ items, paginationClick }) => {
+    console.log('===', items[0]);
     const onClick = (param) => {
         paginationClick(param)
     }
@@ -8,6 +9,20 @@ const Pagination = ({ response, paginationClick }) => {
     return (
         <>
             {
+                items.nextPageToken !== undefined ?
+                    <div className='pagination'>
+                        {
+                            items.map(item => {
+
+                                console.log('===', item);
+
+                                return <button id={item} onClick={() => onClick(item)}>{item}</button>
+                            })
+                        }
+                    </div> :
+                    ''
+            }
+            {/* {
                 response.prevPageToken !== undefined || response.nextPageToken !== undefined ?
                     <div className='pagination'>
                         {
@@ -22,7 +37,7 @@ const Pagination = ({ response, paginationClick }) => {
                         }
                     </div> :
                     ''
-            }
+            } */}
         </>
     )
 }

@@ -1,21 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import Messages from '../statusMessages'
+import React from 'react'
 
-const Output = ({ statusMessage, outputContent }) => {
-    const setMessage = (statusMessage) => {
-        if (statusMessage === Messages.error) {
-            return <p className='error'>{statusMessage}</p>
-        }
-
-        if (statusMessage === Messages.video) {
-            return <p className='warning'>{statusMessage}</p>
-        }
-
-        if (statusMessage !== '') {
-            return <p className='warning'>{statusMessage}</p>
-        }
-    }
-
+const Output = ({ outputContent }) => {
     const renderOutput = outputContent => {
         let items = outputContent.map((item) => {
             let videoId = `${item.id.videoId}`

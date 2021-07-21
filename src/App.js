@@ -2,21 +2,22 @@ import React, { useState } from 'react';
 import Search from './components/Search'
 import Output from './components/Output';
 import Pagination from './components/Pagination';
+import Status from './components/Status';
 import Messages from './statusMessages'
 
 function App() {
-  const [statusMessage, setStatusMessage] = useState('')
+  const [status, setStatus] = useState('')
   const [outputContent, setOutputContent] = useState('')
-  const [firstResponse, setFirstResponse] = useState([])
+  const [paginationItems, setPaginationItems] = useState([{}])
   const [getUrl, setGetUrl] = useState(``)
   const api = 'https://content.googleapis.com/youtube/v3/'
   const paramPart = 'part=snippet';
 
   const getInput = input => {
     if (input === '') {
-      setStatusMessage('')      
+      setStatus('')      
     } else {
-      setStatusMessage(Messages.load)
+      setStatus(Messages.load)
     }
 
     // If search input is blank then it resets output.
@@ -57,11 +58,11 @@ function App() {
                   let item = await fetchAPI(url);
                   arr.push(item);
               }
-              setFirstResponse(response)
+              processPagination(response)
               return await Promise.all(arr);
             } else {
               console.log('1 false');
-              // main.createMessage('warning', 'No matching videos');
+              setStatus(Messages.video)
             }
         })
         .then(response => {
@@ -86,12 +87,11 @@ function App() {
                     return;
                 }
 
-                // main.createMessage('warning', 'No available tags');
+                setStatus(Messages.tag)
             }
         })
         .catch(() => {
-          console.log('Error');
-          // main.createMessage('error', 'Error fetching data');
+          setStatus(Messages.error)
         });
   }
 
@@ -108,6 +108,17 @@ function App() {
     document.getElementById(item['items'][0]['id']).appendChild(p)
   }
 
+  const processPagination = response => {
+    if (response.prevPageToken !== undefined) {
+      paginationItems[0]['prevPageToken'] = ''
+      paginationItems[0]['prevPageToken'] = response.prevPageToken
+    }
+    if (response.nextPageToken !== undefined) {
+      paginationItems[0]['nextPageToken'] = ''
+      paginationItems[0]['nextPageToken'] = response.nextPageToken
+    }
+  }
+
   const paginationClick = (param) => {
     fetchPromise(`${getUrl}&pageToken=${param}`)
   }
@@ -115,8 +126,9 @@ function App() {
   return (
     <>
       <Search getInput={getInput} />
-      <Output statusMessage={statusMessage} outputContent={outputContent} />
-      <Pagination response={firstResponse} paginationClick={paginationClick} />
+      <Status status={status} />
+      <Output outputContent={outputContent} />
+      <Pagination items={paginationItems} paginationClick={paginationClick} />
     </>
   );
 }
