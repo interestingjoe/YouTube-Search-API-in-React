@@ -1,4 +1,5 @@
 .pagination {
+    padding: 0 50px 50px;
     button {
         
     }
@@ -7,6 +8,7 @@
 
 @media only screen and (max-width: 768px) {
     .pagination {
+        padding: 0 14px 50px;
         button {
             
         }

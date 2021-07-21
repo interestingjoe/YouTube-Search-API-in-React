@@ -1,3 +1,5 @@
+import '../component-scss/pagination.scss'
+
 const Pagination = ({ data, paginationClick }) => {
     let renderButton = (value, copy) => {
         return <button id={copy.toLowerCase()} onClick={() => onClick(value)}>{copy}</button>
