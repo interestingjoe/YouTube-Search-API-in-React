@@ -4,6 +4,7 @@ import Output from './components/Output';
 import Pagination from './components/Pagination';
 import Status from './components/Status';
 import Messages from './statusMessages'
+import './scss/reset.scss'
 
 function App() {
   const [status, setStatus] = useState('')

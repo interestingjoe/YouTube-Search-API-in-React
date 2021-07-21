@@ -1,0 +1,33 @@
+@import './fonts.scss';
+@import './variables.scss';
+
+@mixin font-basic {
+    font-family: $arial-helvetica-sans;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+}
+
+@mixin anchor__hover--black {
+    color: $black;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+@mixin anchor__hover--white {
+    color: $white;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}

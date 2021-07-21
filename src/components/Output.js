@@ -1,4 +1,6 @@
 import React from 'react'
+import '../scss/reset.scss'
+import '../component-scss/output.scss'
 
 const Output = ({ outputContent }) => {
     const renderOutput = outputContent => {

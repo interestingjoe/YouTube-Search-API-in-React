@@ -1,0 +1,49 @@
+@import '../scss/variables.scss';
+@import '../scss/mixin.scss';
+
+.search {
+    padding: 30px 50px;
+    background-color: lightgray;
+}
+h1 {
+    margin: 0 0 7px;
+    padding: 0;
+    @include font-basic;
+    font-size: 30px;
+    color: $black;
+}
+#input {
+    vertical-align: top;
+    max-width: 500px;
+    width: 30%;
+    margin: 0 10px 0 0;
+    padding: 10px 15px;
+    border: 1px solid #000;
+}
+#search {
+
+}
+#clear {
+
+}
+
+@media only screen and (max-width: 768px) {
+    .search {
+    
+    }
+    h1 {
+        font-size: 26px;
+    }
+    #input {
+        display: block;
+        max-width: none;
+        width: 95%;
+        margin-bottom: 10px;            
+    }
+    #search {
+
+    }
+    #clear {
+
+    }
+}

@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import '../scss/reset.scss'
+import '../component-scss/search.scss'
 
 const Search = ({ getInput }) => {
     const [value, setValue] = useState('')

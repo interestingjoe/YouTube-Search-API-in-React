@@ -1,0 +1,99 @@
+@import './variables.scss';
+@import './mixin.scss';
+
+body {
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    @include font-basic;
+    color: $black;
+    font-size: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+    font-family: $arial-helvetica-sans;
+    color: $black;
+    vertical-align: top;
+}
+
+p, span {
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    @include font-basic;
+    font-size: 16px;
+    color: $black;
+}
+
+hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid $gray;
+}
+
+img {
+    vertical-align: top;
+}
+
+a {
+    @include font-basic;
+    @include anchor__hover--black;
+}
+
+ol, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    vertical-align: top;
+
+    li {
+        margin: 0;
+        padding: 0;
+        vertical-align: top;
+        @include font-basic;
+    }
+}
+
+button {
+    margin: 0 10px 0 0;
+    padding: 10px;
+    font-size: .90em;
+    border: 1px solid lightskyblue;
+    border-radius: 2px;
+    color: white;
+    background-color: lightskyblue;
+    cursor: pointer;
+    @include font-basic;
+    font-size: 16px;
+    vertical-align: top;
+}
+
+button:hover {
+    color: lightskyblue;
+    background-color: $white;
+}
+
+form {
+    fieldset {
+        margin: 0;
+        padding: 0;
+        @include font-basic;
+
+        legend {
+            margin: 0;
+            padding: 0;
+            border: initial;
+            @include font-basic;
+        }
+
+        input {
+            margin: 0;
+            padding: 10px 20px;
+            border: 1px solid $gray;
+            @include font-basic;
+        }
+    }
+}
