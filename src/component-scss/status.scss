@@ -1,27 +1,17 @@
 @import '../scss/variables.scss';
 
-p {
+.warning,
+.error {
     padding: 20px 50px 50px;
-}
-.status {
-        
-}
-.warning {
-
 }
 .error {
     color: $red;
 }
 
 @media only screen and (max-width: 768px) {
-    p {
-        
-    }
-    .status {
-        
-    }
-    .warning {
-
+    .warning,
+    .error {
+        padding: 20px 50px 50px;
     }
     .error {
         color: $red;

@@ -15,16 +15,14 @@ function App() {
   const paramPart = 'part=snippet';
 
   const getInput = input => {
-    if (input === '') {
-      setStatus('')      
-    } else {
-      setStatus(Messages.load)
-    }
-
     // If search input is blank then it resets output.
     if (input === '') {
       setOutputContent('')
-      return;
+      setStatus('')
+      return
+    } else {
+      setOutputContent('')
+      setStatus(Messages.load)
     }
 
     // Fetches from API.
@@ -47,6 +45,7 @@ function App() {
             console.log('1st response', response);
 
             if (response.items.length > 0) {
+              setStatus('')
               setOutputContent(response)
 
               // Fetches Video Tags

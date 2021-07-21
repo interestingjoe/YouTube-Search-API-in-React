@@ -11,7 +11,7 @@ const Output = ({ outputContent }) => {
 
             return <li key={videoId} id={videoId}>
                     <a className='image' href={anchor}>
-                        <img className='thumbnail' src={item['snippet']['thumbnails']['default']['url']} alt={title} />
+                        <img className='thumbnail' src={item['snippet']['thumbnails']['high']['url']} alt={title} />
                     </a>
                     <div className='copy'>
                         <h3 className='title'>
@@ -31,8 +31,8 @@ const Output = ({ outputContent }) => {
         <section className='output'>
                 {
                     outputContent.items !== undefined ? 
-                        renderOutput(outputContent.items) :
-                        ''
+                    renderOutput(outputContent.items) :
+                    ''
                 }
         </section>
     )
