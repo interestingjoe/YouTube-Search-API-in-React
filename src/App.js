@@ -27,7 +27,7 @@ function App() {
       setStatus(Messages.load)
     }
 
-    // Fetches from API.
+    // Fetch from API.
     let url = `${api}search?${paramPart}&key=${process.env.REACT_APP_API_KEY}&q=${encodeURIComponent(input.trim())}`;
     setGetUrl(url)
     fetchPromise(url);
@@ -43,57 +43,54 @@ function App() {
 
   const fetchPromise = (url) => {
     fetchAPI(url)
-        .then(async response => {
-            console.log('1st response', response);
-
+        .then(response => {
             if (response.items.length > 0) {
+              // If videos exist then render onto page.
               setStatus('')
               setPaginationData(response)
               setOutputContent(response)
-
-              // Fetches Video Tags for each video
-              let arr = [];
-              for (const key in response.items) {
-                  if (response.items[key]['id']['videoId'] === undefined) {
-                      continue;
-                  }
-                  let url = `${api}videos?${paramPart}&key=${process.env.REACT_APP_API_KEY}&id=${response.items[key]['id']['videoId']}`;
-                  let item = await fetchAPI(url);
-                  arr.push(item);
-              }
-              return await Promise.all(arr);
+              return response.items
             } else {
-              console.log('1 false');
+              // If videos don't exist then display No Videos message onto page.
               setStatus(Messages.video)
             }
         })
+        .then(async response => {
+            // Fetch Video Tags for each video.
+            let arr = [];
+            for (const key in response) {
+                if (response[key]['id']['videoId'] === undefined) {
+                    continue;
+                }
+                let url = `${api}videos?${paramPart}&key=${process.env.REACT_APP_API_KEY}&id=${response[key]['id']['videoId']}`;
+                let item = await fetchAPI(url);
+                arr.push(item);
+            }
+            return await Promise.all(arr);
+        })
         .then(response => {
-            console.log('2nd response', response);
+            console.log('response', response);
             if (response.length > 0) {
-                console.log('2nd true');
-                // If Video Tags exists in payload then render onto page.
+                // If Video Tags exists in then render onto page.
                 for (const key in response) {
                     if (
                         response[key]['items'][0]['id'] === undefined || 
                         (response[key]['items'][0]['snippet']['tags'] === undefined || response[key]['items'][0]['snippet']['tags'] === [])
                     ) {
+                        // If one or more Video Tags don't exist then display message in Console Log.
+                        console.log(Messages.tag)
                         continue;
                     }
 
                     renderVideoTags(response[key])
                 }
             } else {
-                console.log('2nd false');
-                // If Video Tags don't exist then display message.
-                if (document.getElementsByClassName('list')[0] === undefined) {
-                    return;
-                }
-
-                setStatus(Messages.tag)
+                // If no Video Tags exist then display message in Console Log.
+                console.log(Messages.tag)
             }
         })
         .catch(() => {
-          setStatus(Messages.error)
+            setStatus(Messages.error)
         });
   }
 
