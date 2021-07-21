@@ -9,7 +9,7 @@ import './scss/reset.scss'
 function App() {
   const [status, setStatus] = useState('')
   const [outputContent, setOutputContent] = useState('')
-  const [paginationItems, setPaginationItems] = useState([{}])
+  const [paginationData, setPaginationData] = useState()
   const [getUrl, setGetUrl] = useState(``)
   const api = 'https://content.googleapis.com/youtube/v3/'
   const paramPart = 'part=snippet';
@@ -17,10 +17,12 @@ function App() {
   const getInput = input => {
     // If search input is blank then it resets output.
     if (input === '') {
+      setPaginationData('')
       setOutputContent('')
       setStatus('')
       return
     } else {
+      setPaginationData('')
       setOutputContent('')
       setStatus(Messages.load)
     }
@@ -46,9 +48,10 @@ function App() {
 
             if (response.items.length > 0) {
               setStatus('')
+              setPaginationData(response)
               setOutputContent(response)
 
-              // Fetches Video Tags
+              // Fetches Video Tags for each video
               let arr = [];
               for (const key in response.items) {
                   if (response.items[key]['id']['videoId'] === undefined) {
@@ -58,7 +61,6 @@ function App() {
                   let item = await fetchAPI(url);
                   arr.push(item);
               }
-              processPagination(response)
               return await Promise.all(arr);
             } else {
               console.log('1 false');
@@ -108,27 +110,31 @@ function App() {
     document.getElementById(item['items'][0]['id']).appendChild(p)
   }
 
-  const processPagination = response => {
-    if (response.prevPageToken !== undefined) {
-      paginationItems[0]['prevPageToken'] = ''
-      paginationItems[0]['prevPageToken'] = response.prevPageToken
-    }
-    if (response.nextPageToken !== undefined) {
-      paginationItems[0]['nextPageToken'] = ''
-      paginationItems[0]['nextPageToken'] = response.nextPageToken
-    }
-  }
-
   const paginationClick = (param) => {
+    setPaginationData('')
+    setOutputContent('')
+    setStatus(Messages.load)
     fetchPromise(`${getUrl}&pageToken=${param}`)
   }
 
   return (
     <>
       <Search getInput={getInput} />
-      <Status status={status} />
-      <Output outputContent={outputContent} />
-      <Pagination items={paginationItems} paginationClick={paginationClick} />
+      {
+        status !== '' ?
+        <Status status={status} /> :
+        ''
+      }
+      {
+        outputContent !== '' ?
+        <Output outputContent={outputContent} /> :
+        ''
+      }
+      {
+        paginationData !== undefined || paginationData !== undefined ?
+        <Pagination data={paginationData} paginationClick={paginationClick} /> :
+        ''
+      }
     </>
   );
 }
