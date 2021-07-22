@@ -69,7 +69,6 @@ function App() {
             return await Promise.all(arr);
         })
         .then(response => {
-            console.log('response', response);
             if (response.length > 0) {
                 // If Video Tags exists in then render onto page.
                 for (const key in response) {
